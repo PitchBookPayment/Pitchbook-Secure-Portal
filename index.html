@@ -112,10 +112,13 @@
       </div>
       <div class="flex flex-col justify-center items-end text-right">
         <p class="text-[10px] text-slate-500 font-bold uppercase mb-2 tracking-widest">Remittance Status</p>
-        <div class="flex items-center gap-2.5 bg-blue-950/40 px-4 py-2 rounded-full border border-blue-500/20 mb-5">
+        
+        <!-- CLICKABLE STATUS BUTTON -->
+        <a href="compliance.html" class="flex items-center gap-2.5 bg-blue-950/40 px-4 py-2 rounded-full border border-blue-500/20 mb-5 hover:bg-blue-900/40 transition-colors">
           <span class="status-dot bg-blue-500 pulsing"></span>
           <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Awaiting Bank Collection</span>
-        </div>
+        </a>
+
         <button onclick="runAudit()" class="px-6 py-2.5 bg-slate-50 hover:bg-white text-slate-950 rounded-lg font-bold text-[10px] uppercase tracking-[0.1em] transition-all active:scale-95">
           Review Dashboard
         </button>
