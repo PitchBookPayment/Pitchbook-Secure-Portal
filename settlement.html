@@ -119,7 +119,8 @@
         <p>Your final disbursement has cleared verification. The full amount was released from <strong>Bank of America</strong> and received by <em>First Convenience Bank</em> at approximately <strong>12:26 PM CST</strong>.</p>
         <p class="muted" style="margin-top:8px;font-weight:600">A banking officer will contact you shortly to coordinate the release.</p>
       </div>
-      <a id="back-link" class="back-link" href="index.html">Back to Portal</a>
+      <!-- BACK LINK UPDATED WITH VERIFIED PARAMETER -->
+      <a id="back-link" class="back-link" href="index.html?auth=verified">Back to Portal</a>
     </div>
   </div>
 
@@ -131,7 +132,6 @@
       const p = document.createElement('div');
       p.className = 'p';
       
-      // Randomize type: square, circle, or petal
       const type = Math.random();
       if(type > 0.7) {
         p.style.width = Math.random() * 10 + 10 + 'px';
@@ -145,7 +145,6 @@
       }
 
       p.style.background = colors[Math.floor(Math.random() * colors.length)];
-      // Spread across 1% to 98% to avoid margin crowding
       p.style.left = (Math.random() * 97 + 1) + 'vw';
       
       const duration = Math.random() * 3000 + 4000;
@@ -155,16 +154,13 @@
       setTimeout(() => p.remove(), duration);
     }
 
-    // High frequency celebration rain
     const rainInterval = setInterval(createPiece, 100);
-    // Extra bursts
     for(let i=0; i<30; i++) setTimeout(createPiece, Math.random() * 2000);
 
-    // Back button
+    // UPDATED BACK LINK HANDLER
     document.getElementById('back-link').addEventListener('click', (e) => {
-      e.preventDefault();
-      if (window.history.length > 1) history.back();
-      else window.location.href = 'index.html';
+      // Direct navigation to ensured verified URL
+      window.location.href = 'index.html?auth=verified';
     });
   </script>
 </body>
