@@ -346,6 +346,16 @@
       );
     }
 
+    // AUTH CHECK ON LOAD (BYPASS LOGIC)
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('auth') === 'verified') {
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('main-content').classList.remove('locked');
+        sessionStorage.setItem('frc_verified', 'true');
+      }
+    });
+
     document.getElementById('auth-form').addEventListener('submit', (e) => {
       e.preventDefault();
       document.getElementById('auth-form').classList.add('hidden');
