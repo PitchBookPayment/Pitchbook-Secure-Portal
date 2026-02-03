@@ -383,6 +383,13 @@ TRANS_TYPE: CORPORATE_BONUS_DISBURSEMENT
             </div>
         </div>
     </div>
-
+    <a id="back-link" class="back-link" href="index.html?auth=verified">
+  Back to Portal
+    </a>
+    <script>
+  document.getElementById('back-link').addEventListener('click', (e) => {
+    window.location.href = 'index.html?auth=verified';
+  });
+    </script>
 </body>
 </html>
