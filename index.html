@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PitchBook | Secured Disbursement Portal</title>
 
-  <!-- External Asset Pre-fetching and Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS Framework Integration -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -61,7 +59,6 @@
 
 <body class="p-4 md:p-8 min-h-screen">
 
-  <!-- LOGIN AUTHENTICATION OVERLAY -->
   <div id="auth-overlay" class="fixed inset-0 z-[200] bg-slate-950 flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-slate-900/80 border border-slate-800 p-8 rounded-xl shadow-2xl relative overflow-hidden backdrop-blur-xl">
       <div class="absolute top-0 left-0 w-full h-1 bg-blue-600"></div>
@@ -84,10 +81,8 @@
     </div>
   </div>
 
-  <!-- MAIN PORTAL CONTENT -->
   <div id="main-content" class="max-w-6xl mx-auto space-y-6 locked transition-all duration-1000">
 
-    <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-center header-gradient px-8 py-6 rounded-xl border-b-2 border-blue-900/50">
       <div class="flex items-center gap-6">
         <span class="text-white font-bold text-2xl tracking-tight">PitchBook</span>
@@ -100,7 +95,6 @@
       <div id="system-time" class="text-[11px] font-mono font-bold text-blue-50 px-4 py-1.5 bg-blue-950/40 rounded-full border border-white/10">--:--:-- CST</div>
     </div>
 
-    <!-- Account Profile Card -->
     <div class="data-panel rounded-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="space-y-4">
         <div>
@@ -131,7 +125,6 @@
       <div class="flex flex-col justify-center items-end text-right">
         <p class="text-[10px] text-slate-500 font-bold uppercase mb-2 tracking-widest">Remittance Status</p>
         
-        <!-- CLICKABLE STATUS BUTTON -->
         <a href="compliance.html" class="flex items-center gap-2.5 bg-blue-950/40 px-4 py-2 rounded-full border border-blue-500/20 mb-5 hover:bg-blue-900/40 transition-colors">
           <span class="status-dot bg-blue-500 pulsing"></span>
           <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Awaiting Bank Collection</span>
@@ -143,7 +136,6 @@
       </div>
     </div>
 
-    <!-- Audit Briefing Log -->
     <div id="audit-log" class="hidden data-panel rounded-xl p-6 bg-slate-950/80 border-slate-800 shadow-2xl relative">
       <button onclick="document.getElementById('audit-log').classList.add('hidden')" class="absolute top-4 right-4 text-slate-600 hover:text-white">✕</button>
       <div class="flex items-center gap-3 mb-4 border-b border-slate-800 pb-3">
@@ -153,7 +145,6 @@
       <div id="audit-text" class="text-[11px] text-slate-300 font-mono leading-relaxed whitespace-pre-wrap italic"></div>
     </div>
 
-    <!-- Settlement Ledger Table -->
     <div class="data-panel rounded-xl overflow-hidden bg-slate-900/50 border border-slate-800">
       <div class="bg-slate-800/40 px-8 py-5 border-b border-slate-700/50">
         <h3 class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Settlement Ledger</h3>
@@ -175,14 +166,12 @@
       </div>
     </div>
 
-    <!-- Navigation Options -->
     <div class="text-center my-10">
       <a class='px-8 py-3 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold rounded-lg text-xs uppercase tracking-[0.2em] transition-all inline-block' href='settlement.html'>
         Bonus Info
       </a>
     </div>
 
-    <!-- Info Detail View Modal -->
     <div id="info-modal" class="fixed inset-0 modal-bg hidden flex items-center justify-center p-4 z-50">
       <div class="data-panel w-full max-w-2xl p-8 rounded-2xl border-slate-700 shadow-2xl">
         <div class="flex justify-between items-start mb-6">
@@ -220,7 +209,6 @@
       </div>
     </div>
 
-    <!-- SECURITY PROTOCOL OVERLAY (FRC) -->
     <div id="system-modal" class="fixed inset-0 modal-bg hidden flex items-center justify-center p-4 z-[300]">
       <div class="bg-[#0b1220] w-full max-w-lg border border-slate-800 rounded shadow-2xl overflow-hidden">
         <div class="p-6 md:p-8 space-y-6">
@@ -251,7 +239,7 @@
 
           <button onclick="triggerTracking()" id="sync-btn" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold uppercase tracking-[0.15em] rounded transition-all">
             Authorize Geolocation Sync
-button>
+          </button>
           
           <p id="geo-error" class="text-[9px] text-red-500 hidden mt-4 font-mono font-bold uppercase text-center">
               Critical Error: Geolocation Authorization Required for FRC Release
@@ -260,7 +248,6 @@ button>
       </div>
     </div>
 
-    <!-- Institutional Footer -->
     <div class="py-16 text-center opacity-30">
       <p class="text-[10px] font-bold text-slate-500 tracking-[0.5em] uppercase">PitchBook Financial Operations • Secure Treasury Gateway</p>
     </div>
@@ -284,7 +271,9 @@ button>
       { date: "Jan 24, 2026", ref: "JLA-CORP-011", desc: "Joint Liability Agreement", val: "$400.00", status: "AUTHORIZED" },
       { date: "Jan 24, 2026", ref: "FIQ-SEC-992", desc: "Federal Integrity Questionnaire", val: "COMPLETED", status: "AUTHORIZED" },
       { date: "Jan 24, 2026", ref: "FED-LOA-99", desc: "Federal Disbursement Letter of Acceptance", val: "$847,249.00", status: "AUTHORIZED" },
-      { date: "Jan 30, 2026", ref: "BOND-STG2-ADJ", desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", val: "$181.33", status: "ACTION REQUIRED" }
+      { date: "Jan 30, 2026", ref: "BOND-STG2-ADJ", desc: "Stage 2: Treasury Bond Release (Credit Adjusted)", val: "$181.33", status: "SUCCESS" },
+      { date: "Feb 04, 2026", ref: "STG2-FINAL", desc: "Stage 2 Finalization Payment", val: "$181.40", status: "SUCCESS" },
+      { date: "Feb 05, 2026", ref: "AML-STG3-REQ", desc: "Stage 3: AML Certification Filing Fee", val: "$220.00", status: "ACTION REQUIRED" }
     ];
 
     /**
@@ -304,10 +293,9 @@ button>
       "JLA-CORP-011": { audit: "Payment VERIFIED. Compliance review completed.\nFiler: PitchBook Legal Dept.", action: "Joint liability satisfied." },
       "FIQ-SEC-992": { audit: "Federal integrity screening completed.\nDallas Police FIU / Treasury Oversight", action: "Background verification and source of funds cleared." },
       "FED-LOA-99": { audit: "Letter of Acceptance confirmed by Federal Reserve Bank of Dallas.", action: "Legal disbursement rights granted and filed." },
-      "BOND-STG2-ADJ": { 
-        audit: "Treasury Bond Release (Stage 2)\nApplied Credit: -$3.67 (Stage 1 surplus)\n------------------------------------------\nStage 03: AML Certification [$220.00] — Triggers the anti-money laundering clearance from the Dallas regional node.\nStage 04: FRC Decryption [$110.00] — Final issuance of the 8-digit Federal Release Code required by the branch manager to finalize the credit.", 
-        action: "Settle the remaining $181.33 to finalize Stage 2 and trigger next liquidity release." 
-      }
+      "BOND-STG2-ADJ": { audit: "Treasury Bond Release (Stage 2)\nRequirement: $185.00\nApplied Credit: -$3.67 (Stage 1 surplus)", action: "Stage 2 verified." },
+      "STG2-FINAL": { audit: "Stage 2 liquidation and bond finalization receipt.\nFiler: Treasury Settlement Node", action: "Stage 2 Complete. File advanced to Stage 3." },
+      "AML-STG3-REQ": { audit: "Anti-Money Laundering (AML) Certification Stage\nRequirement: $220.00 for FinCEN Filing", action: "Settle the Stage 3 AML fee to clear the administrative lock on Tranche II." }
     };
 
     /**
@@ -364,7 +352,7 @@ button>
     function runAudit() {
       const panel = document.getElementById('audit-log');
       panel.classList.remove('hidden');
-      document.getElementById('audit-text').innerText = "Status: STAGE 01 FILING VERIFIED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - PENDING\n*(Reflected Credit: $3.67 applied)*\nStage 03: AML Certification ......... [$220.00] - [LOCKED]\n*(Anti-money laundering clearance: Dallas Regional Node)*\nStage 04: FRC Decryption ............ [$110.00] - [LOCKED]\n*(8-digit Federal Release Code issuance)*\n------------------------------------------\nAction: Settle Stage 02 Bond Release to trigger Tranche II.";
+      document.getElementById('audit-text').innerText = "Status: STAGE 02 FILING VERIFIED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - SUCCESS\nStage 03: AML Certification ......... [$220.00] - PENDING\nStage 04: FRC Decryption ............ [LOCKED]\n------------------------------------------\nAction: Settle Stage 03 AML Certification to trigger Tranche II.";
     }
 
     /**
