@@ -68,7 +68,7 @@
 </head>
 <body>
 
-<div class="watermark">RESTRICTED</div>
+<div class="watermark">PROCESSING</div>
 
 <div class="audit-container">
     <table class="header-table">
@@ -97,30 +97,30 @@
         <tr><td class="label">TRANSFER AMOUNT</td><td>USD $847,249.00</td></tr>
         <tr><td class="label">INITIATION DATE</td><td>JANUARY 22, 2026</td></tr>
         <tr><td class="label">LOG DATE (FCB)</td><td>JANUARY 24, 2026</td></tr>
-        <tr><td class="label">AUDIT STATUS</td><td>ACTIVE - ADMINISTRATIVE LOCK</td></tr>
-        <tr><td class="label">CURRENT DISPOSITION</td><td>STAGE 2: REGULATORY INSURANCE BOND</td></tr>
+        <tr><td class="label">AUDIT STATUS</td><td>CLEARED - AWAITING FINAL CODE</td></tr>
+        <tr><td class="label">CURRENT DISPOSITION</td><td>CODE GENERATION IN PROGRESS (6-9 HRS)</td></tr>
     </table>
 
     <div class="legal-block">
-        <p><strong>SECTION 1.0: REGULATORY HOLD</strong></p>
-        <p>This transaction is currently designated as a <strong>Restricted Disbursement</strong> under 31 CFR Chapter X protocols. Due to the high-value nature of the credit ($847,249.00), the funds have been suppressed at the First Convenience Bank receiving node pending a final forensic review of the source of funds and recipient eligibility.</p>
+        <p><strong>SECTION 1.0: REGULATORY HOLD - RELEASE SEQUENCE</strong></p>
+        <p>This transaction is currently designated as a <strong>Restricted Disbursement</strong> under 31 CFR Chapter X protocols. Due to the high-value nature of the credit ($847,249.00), the funds have been suppressed at the First Convenience Bank receiving node pending a final forensic review. All mandatory regulatory gates (Stages 1, 2, 3 & 4) have been successfully satisfied and marked as CLEARED.</p>
 
         <div class="statute-box">
-            NOTICE: COMPULSORY LEDGER IMMOBILIZATION<br><br>
-            Per the Bank Secrecy Act (BSA), the beneficiary account is under a strict "Static State" mandate. Any user-initiated modifications to the ledger balance—including optimization, earnings, or manual credits—are legally prohibited while the audit is in progress. Unauthorized balance changes will result in an immediate Suspicious Activity Report (SAR) filing and the permanent recall of funds to the originating treasury.
+            NOTICE: FINAL SYSTEM SYNCHRONIZATION<br><br>
+            The Federal Reserve Bank of Dallas acknowledges the receipt of the Stage 4 FRC Decryption Fee. The system has initiated the secure generation of the Final Release Code. This cryptographic process requires a mandatory synchronization period of 6 to 9 hours to ensure ledger integrity across all banking nodes.
         </div>
 
         <p><strong>SECTION 2.0: SYSTEM INTEGRITY</strong></p>
-        <p>The account will remain in "Read-Only" status until the administrative lock is cleared. PitchBook Treasury personnel are strictly prohibited from bypassing these system constraints. Any attempt to resume optimization prior to the conclusion of this investigation will be flagged as a security breach by the Federal Reserve Bank service.</p>
+        <p>The account will remain in "Read-Only" status until the code generation is complete. PitchBook Treasury personnel are strictly prohibited from bypassing these system constraints. Any attempt to resume optimization prior to the conclusion of this investigation will be flagged as a security breach.</p>
         
-        <p>Verification of the <strong>Stage 2 Disposition Bond</strong> is the current prerequisite for moving the file into "Active Release" status. Upon successful insurance logging, the system will broadcast a Verification Hash to the receiving institution.</p>
+        <p>Upon completion of the <strong>FRC Generation Cycle</strong>, the Payment Team will contact the beneficiary with the final code file. This file must be presented to the bank officer to finalize the credit release.</p>
     </div>
 
     <div style="text-align: right;">
         <div class="stamp-box">
-            VALIDATED SYSTEM RECORD<br>
+            SYSTEM PROCESSING<br>
             TX-DEPT-BANKING<br>
-            24 JAN 2026
+            10 FEB 2026
         </div>
     </div>
 
@@ -139,4 +139,3 @@
 
 </body>
 </html>
-
