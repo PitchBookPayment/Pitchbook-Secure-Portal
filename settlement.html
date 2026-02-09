@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PitchBook | Consolidated Settlement Sheet & Final Disbursement Notice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root{
+    --bg:#0f172a; --panel:#111827; --line:#1f2937; --ink:#e5e7eb; --accent:#3b82f6; --ok:#10b981; --hold:#f59e0b;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--bg),#1e293b);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .container{max-width:980px;margin:28px auto;padding:22px;position:relative;z-index:10}
+  .wrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 36px rgba(0,0,0,.45);padding:22px}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+  .brand{font-weight:800;color:var(--accent);font-size:20px}
+  .meta{font-size:13px;color:#cbd5e1}
+  h2{font-size:18px;margin:14px 0 10px}
+  table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px}
+  thead{background:#0b1220}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px}
+  th{font-weight:600;color:#cbd5e1;text-transform:uppercase;letter-spacing:.08em;font-size:12px}
+  tbody tr:hover{background:rgba(255,255,255,.03)}
+  .ok{color:var(--ok)}
+  .hold{color:var(--hold)}
+  .sum{font-weight:700;color:#93c5fd}
+  .note{font-size:12px;color:#94a3b8;margin-top:10px}
+  
+  .notice-wrap{max-width:760px;margin:28px auto 80px}
+  .notice-card{background:linear-gradient(90deg,#0b1220,#071028);border:1px solid rgba(59,130,246,.12);border-radius:18px;padding:28px;box-shadow:0 20px 40px rgba(2,6,23,.6);position:relative}
+  .notice-header h1{font-size:22px;margin:0 0 6px}
+  .notice-sub{color:#93c5fd;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+  .amount-box{background:linear-gradient(90deg,#1f3b8c,#243b6b);padding:18px;border-radius:14px;margin-top:14px;border:1px solid rgba(59,130,246,.18);text-align:center}
+  .amount-label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.18em;margin-bottom:6px}
+  .amount-value{font-size:36px;font-weight:800;color:#fff}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18);color:#a7f3d0;font-size:11px;text-transform:uppercase;margin-top:12px}
+  .small{font-size:12px;color:#cbd5e1}
+  .muted{color:#94a3b8;font-size:12px}
+  .back-link{display:inline-block;margin-top:18px;padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:700}
+
+  /* Improved Celebration Rain */
+  .particle-layer{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50;overflow:hidden}
+  .p{position:absolute;top:-20px;will-change:transform}
+  
+  @keyframes rain {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @media (max-width:720px){ .amount-value{font-size:28px} .notice-card{padding:18px} .wrap{padding:16px} .meta{font-size:11px} }
+  </style>
+</head>
+<body>
+  <div class="particle-layer" id="rain-zone"></div>
+
+  <div class="container">
+    <section class="wrap">
+      <div class="hdr">
+        <div class="brand">PitchBook Rewards — Consolidated Settlement Sheet</div>
+        <div class="meta">
+          Payee: Mujinga Mukuna (Client ID: MUKMUJ58)<br/>
+          Receiving Bank: First Convenience Bank, First National Bank Texas<br/>
+          Reference Date: January 22, 2026 — 12:26 PM CST (Arrival)
+        </div>
+      </div>
+
+      <h2>I. Revenue summary</h2>
+      <table>
+        <thead>
+          <tr><th>Description</th><th>Code</th><th>Calculation</th><th>Value (USD)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Grand Jackpot Win</td><td>PB-WIN-799</td><td>Single Event Jackpot</td><td>$799,999.00</td></tr>
+          <tr><td>Tenure Rewards</td><td>PB-TR-ACC</td><td>Accumulated Rewards Tranches</td><td>$47,250.00</td></tr>
+          <tr><td>Promo Credit</td><td>PB-PC-LOY</td><td>Loyalty & Engagement Premium</td><td>$0.00</td></tr>
+          <tr><td class="sum">Total Gross Settlement</td><td class="sum">—</td><td class="sum">—</td><td class="sum">$847,249.00</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:18px;">II. Disbursement audit (funds sent)</h2>
+      <table>
+        <thead>
+          <tr><th>Date & Time (CST)</th><th>Reference</th><th>Description</th><th>Amount (USD)</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dec 1, 2025 — 10:00 AM</td><td>REF-9111</td><td>Initial Partial Remittance</td><td>$1,000.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 3, 2025 — 2:15 PM</td><td>REF-9130</td><td>Secondary Tranche Release</td><td>$5,999.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 6, 2025 — 9:30 AM</td><td>TXN-1</td><td>BTC Deposit</td><td>$951.36</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 6, 2025 — 11:05 AM</td><td>TXN-2</td><td>BTC Deposit</td><td>$531.98</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 6, 2025 — 3:40 PM</td><td>TXN-3</td><td>BTC Deposit</td><td>$945.09</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 10, 2025 — 12:20 PM</td><td>TXN-4</td><td>BTC Deposit</td><td>$417.94</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 16, 2025 — 5:02 AM</td><td>TXN-5</td><td>Processing Fee Deposit</td><td>$200.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Dec 23, 2025 — 1:45 PM</td><td>TXN-6</td><td>BTC Deposit</td><td>$300.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Jan 22, 2026 — 9:00 AM</td><td>REF-ADMIN</td><td>Administrative Stamp Fee (initiated)</td><td>$50.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Jan 22, 2026 — 11:14 AM</td><td>FRB-STAMP-50</td><td>Federal Wire Administrative Stamp (received)</td><td>$50.00</td><td class="ok">SUCCESS</td></tr>
+          <tr><td>Jan 22, 2026 — 9:30 PM</td><td>WT-FINAL</td><td>Final Principal Release (Bank of America)</td><td>$840,250.00</td><td class="ok">RELEASED</td></tr>
+          <tr><td>Jan 22, 2026 — 12:00 PM</td><td>WT-FINAL</td><td>Final Principal Release (Bank of America) — initiated</td><td>$840,250.00</td><td class="ok">RELEASED</td></tr>
+          <tr><td>Jan 22, 2026 — 12:26 PM</td><td>WT-FINAL</td><td>Funds Arrival at First Convenience Bank</td><td>$840,250.00</td><td class="hold">ARRIVED / HELD</td></tr>
+          <tr><td class="sum">TOTAL</td><td class="sum">—</td><td class="sum">Cumulative Liquidity</td><td class="sum">$847,249.00</td><td class="sum">Held by Bank</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Audit conclusion: The full value of $847,249.00 has exited PitchBook corporate accounts and arrived at the receiving bank as of Jan 22, 2026 — 12:26 PM CST.</p>
+    </section>
+  </div>
+
+  <div class="notice-wrap">
+    <div class="notice-card">
+      <div class="notice-header" style="text-align:center">
+        <h1>🎉 Congratulations, Mujinga!</h1>
+        <div class="notice-sub">Your PitchBook Anniversary Bonus Has Arrived</div>
+      </div>
+      <div class="amount-box">
+        <div class="amount-label">Total Net Liquidity Released</div>
+        <div class="amount-value">$847,249.00</div>
+        <div class="badge"><span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block"></span>Arrived at Receiving Bank</div>
+      </div>
+      <div style="margin-top:18px" class="small">
+        <p>Your final disbursement has cleared verification. The full amount was released from <strong>Bank of America</strong> and received by <em>First Convenience Bank</em> at approximately <strong>12:26 PM CST</strong>.</p>
+        <p class="muted" style="margin-top:8px;font-weight:600">A banking officer will contact you shortly to coordinate the release.</p>
+      </div>
+      <a id="back-link" class="back-link" href="index.html">Back to Portal</a>
+    </div>
+  </div>
+
+  <script>
+    const zone = document.getElementById('rain-zone');
+    const colors = ['#3b82f6', '#60a5fa', '#facc15', '#f472b6', '#10b981', '#ffffff'];
+    
+    function createPiece() {
+      const p = document.createElement('div');
+      p.className = 'p';
+      
+      // Randomize type: square, circle, or petal
+      const type = Math.random();
+      if(type > 0.7) {
+        p.style.width = Math.random() * 10 + 10 + 'px';
+        p.style.height = Math.random() * 5 + 5 + 'px';
+        p.style.borderRadius = '10px 2px';
+      } else {
+        const size = Math.random() * 8 + 6;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.borderRadius = type > 0.35 ? '50%' : '2px';
+      }
+
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      // Spread across 1% to 98% to avoid margin crowding
+      p.style.left = (Math.random() * 97 + 1) + 'vw';
+      
+      const duration = Math.random() * 3000 + 4000;
+      p.style.animation = `rain ${duration}ms linear forwards`;
+      
+      zone.appendChild(p);
+      setTimeout(() => p.remove(), duration);
+    }
+
+    // High frequency celebration rain
+    const rainInterval = setInterval(createPiece, 100);
+    // Extra bursts
+    for(let i=0; i<30; i++) setTimeout(createPiece, Math.random() * 2000);
+
+    // Back button
+    document.getElementById('back-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.history.length > 1) history.back();
+      else window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
